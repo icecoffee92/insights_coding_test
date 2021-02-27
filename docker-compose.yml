@@ -1,0 +1,22 @@
+version: '3'
+
+services:
+  api:
+    build:
+      context: ./api
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ~/binsights_code_test/api:/var/www/html
+  sql:
+    build:
+      context: sql
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: ''
+      MYSQL_ALLOW_EMPTY_PASSWORD : 'yes'
+    restart: always
+    volumes:
+            - /database/path/of/my/local/filesystem:/database/path/to/mount/into/containers/filesystem
