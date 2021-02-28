@@ -1,22 +1,66 @@
-version: '3'
+version: '3.3'
 
 services:
-  api:
+  # app:
+  #   build:
+  #     context: ./app
+  #   ports:
+  #     - "80:80"
+  #     - "443:443"
+  #   links:
+  #     - db
+  #   volumes:
+  #     - ~/binsights_code_test/app:/var/www/html
+  #   environment:
+  #     PMA_PORT: 8080
+  #     MYSQL_ROOT_PASSWORD: secret
+  app:
     build:
-      context: ./api
-    ports:
-      - "80:80"
-      - "443:443"
+      context: ./app
+      dockerfile: Dockerfile
+    container_name: php73
+    depends_on:
+      - db
     volumes:
-      - ~/binsights_code_test/api:/var/www/html
-  sql:
-    build:
-      context: sql
+      - ./app:/var/www/html
     ports:
-      - "3306:3306"
-    environment:
-      MYSQL_ROOT_PASSWORD: ''
-      MYSQL_ALLOW_EMPTY_PASSWORD : 'yes'
+      - 8000:80
+      - 443:443
+
+  db:
+    # build:
+    #   context: sql
+    image: mysql:8.0.19
+    container_name: mysql8
+    command: --default-authentication-plugin=mysql_native_password
     restart: always
+    ports:
+      # - "3306:3306"
+      - 6603:3306
+    environment:
+      MYSQL_DATABASE: insights
+      MYSQL_USER: root
+      MYSQL_ROOT_PASSWORD: secret
+      MYSQL_PASSWORD: secret
+      # MYSQL_ALLOW_EMPTY_PASSWORD : 'yes'
     volumes:
-            - /database/path/of/my/local/filesystem:/database/path/to/mount/into/containers/filesystem
+      - mysql-data:/var/lib/mysql
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin:5.0.1
+    restart: always
+    # container_name: phpmyadmin
+    links:
+      - db
+    environment:
+    #  - PMA_ARBITRARY=1
+      PMA_HOST: db
+      PMA_USER: root
+      PMA_PASSWORD: secret
+      MYSQL_ROOT_PASSWORD: secret
+      
+    ports:
+      - 8080:80
+     
+volumes:
+  mysql-data:
