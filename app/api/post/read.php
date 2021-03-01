@@ -9,12 +9,12 @@ include_once '../../models/Policy.php';
 $database = new Database();
 $db = $database->connect();
 
-echo "AWESOME"; 
+// echo "AWESOME"; 
 $policy = new Policy($db);
 
-// Blog post query
-$result = $policy->read();
-$num = $result->rowCount();
+// // Blog post query
+// $result = $policy->read();
+// $num = $result->rowCount();
 
 if($num > 0) {
 //     $policy_arr = array();

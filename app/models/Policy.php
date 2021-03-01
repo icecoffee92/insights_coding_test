@@ -51,17 +51,16 @@ class Policy {
         // return $stmt;
 
         if($result = $this->conn->query($query)) {
-            $data = array(); 
+
+            $data = array();
+
             if($result) {
-                while($row = $result->fetch_object()) {
+                while($row = $result->fetch_assoc()) {
                     $data[] = $row;
                 }
             }
-
-            print_r($data);
-            print_r($this->conn->query($query));
-            $result->free_result();
-            print_r($result); 
+            
+            return $data; 
         }
 
     }

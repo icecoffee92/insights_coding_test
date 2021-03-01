@@ -28,23 +28,19 @@ services:
       - 443:443
 
   db:
-    # build:
-    #   context: sql
     image: mysql:8.0.19
     container_name: mysql8
     command: --default-authentication-plugin=mysql_native_password
     restart: always
     ports:
-      # - "3306:3306"
-      - 6603:3306
+      - 3306:3306
     environment:
       MYSQL_DATABASE: insights
       MYSQL_USER: root
       MYSQL_ROOT_PASSWORD: secret
       MYSQL_PASSWORD: secret
-      # MYSQL_ALLOW_EMPTY_PASSWORD : 'yes'
     volumes:
-      - mysql-data:/var/lib/mysql
+      - mysql-data-volume:/var/lib/mysql 
 
   phpmyadmin:
     image: phpmyadmin/phpmyadmin:5.0.1
@@ -63,4 +59,6 @@ services:
       - 8080:80
      
 volumes:
-  mysql-data:
+  # mysql-data:
+  # mysql-d:
+  mysql-data-volume:

@@ -18,19 +18,23 @@ include_once './models/Policy.php';
 $database = new Database();
 $db = $database->connect();
 
+echo "AWESOME"; 
+
 $policy = new Policy($db); 
 
 $result = $policy->read();
-$num = mysqli_num_rows($result);
 
-if($num > 0) {
-    print_r($num);
-} else {
-    echo "No rows yet!";
+print_r($result); 
+
+foreach($result as $r) {
+    ?>
+    <p><?php echo $r['client']; ?></p>
+    <p><?php echo $r['customer_name']; ?></p>
+    <p><?php echo $r['customer_address']; ?></p>
+    <p><?php echo $r['premium']; ?></p>
+    <p><?php echo $r['policy_type']; ?></p>
+    <?php
 }
-
-echo "No errors?";
-
 
 
 ?>
