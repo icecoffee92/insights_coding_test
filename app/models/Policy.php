@@ -18,39 +18,25 @@ class Policy {
     }
 
     public function read() {
-        $query = "SELECT * FROM policy";
-            // SELECT
-            //     c.name as client_name,
-            //     p.id,
-            //     p.client,
-            //     p.customer_name,
-            //     p.customer_address,
-            //     p.premium,
-            //     p.policy_type,
-            //     p.insurer_name
-            // FROM
-            // ' . $this->table . 'p 
-            // LEFT JOIN
-            //     client c ON p.client = c.id
-            // ORDER BY
-            //     p.id DESC;
-        
-        // Prepare statement
-        // $stmt = $this->conn->prepare("SELECT * FROM policy"); 
-
-        // // Execute Query
-        // $stuff = $this->conn->query($stmt);
-        // print_r($stuff);
-        // $stmt->execute();
-
-        // // while($row = $result->fetch_assoc()) {
-        // //     print_r($row);
-        // // });
-
-        // // $stmt->close();
-        // return $stmt;
+        $query = "SELECT
+                c.name as client_name,
+                p.id,
+                p.client,
+                p.customer_name,
+                p.customer_address,
+                p.premium,
+                p.policy_type,
+                p.insurer_name
+            FROM
+            " . $this->table . " p 
+            LEFT JOIN
+                client c ON p.client = c.id
+            ORDER BY
+                p.id DESC";
 
         if($result = $this->conn->query($query)) {
+
+            print_r($result);
 
             $data = array();
 

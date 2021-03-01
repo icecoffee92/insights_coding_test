@@ -28,7 +28,7 @@ print_r($result);
 
 foreach($result as $r) {
     ?>
-    <p><?php echo $r['client']; ?></p>
+    <p><?php echo $r['client_name']; ?></p>
     <p><?php echo $r['customer_name']; ?></p>
     <p><?php echo $r['customer_address']; ?></p>
     <p><?php echo $r['premium']; ?></p>
