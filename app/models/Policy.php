@@ -19,7 +19,7 @@ class Policy {
 
     public function read() {
         $query = "SELECT
-                c.name as client_name,
+                c.name as client_name, 
                 p.id,
                 p.client,
                 p.customer_name,
@@ -36,17 +36,18 @@ class Policy {
 
         if($result = $this->conn->query($query)) {
 
-            print_r($result);
-
-            $data = array();
+            $policies = array();
 
             if($result) {
                 while($row = $result->fetch_assoc()) {
-                    $data[] = $row;
+                    $policies[] = $row;
                 }
             }
+
+            $data = array();
+            $data['policies'] = $policies;
             
-            return $data; 
+            return json_encode($data); 
         }
 
     }
