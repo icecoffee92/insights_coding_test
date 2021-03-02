@@ -1,40 +1,50 @@
-<?php
-// $host = 'db';
-// $user = 'root';
-// $password = 'secret';
-// $db = 'insights';
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 
-// $conn = new mysqli($host, $user, $password, $db);
+    <title>Vue App</title>
+  </head>
 
-// if($conn->connect_error) {
-//     echo 'connection failed' . $conn->connection_error;
-// } else {
-//     echo 'Sucessfully connected to SQL';
-// }
+  <body>
 
-include_once './config/Database.php';
-include_once './models/Policy.php';
+    <div id="app">
 
-$database = new Database();
-$db = $database->connect();
+      {{ policies }}
 
-echo "AWESOME"; 
+      <p v-for="policy in policies">
+      </p>
+    </div>
 
-$policy = new Policy($db); 
+    <script>
+      const App = new Vue({
+        el: '#app',
+        data() {
+          return {
+            errorMsg: false,
+            message: 'Hello World!',
+            policies: [],
+            customer_address: '',
+            // currentPolicy: {}
+          }
+        },
+        mounted: function() {
+          this.getAllClients(); 
+        },
+        methods: {
+          getAllClients() {
+            axios.get("http://localhost:8000/api/policy/read.php").then((response) => {
+              this.policies = response.data.policies; 
+              console.log(response.data.policies);
+            });
+          }
+        }
+      })  
+    </script>
 
-$result = $policy->read();
-
-print_r($result); 
-
-foreach($result as $r) {
-    ?>
-    <p><?php echo $r['client_name']; ?></p>
-    <p><?php echo $r['customer_name']; ?></p>
-    <p><?php echo $r['customer_address']; ?></p>
-    <p><?php echo $r['premium']; ?></p>
-    <p><?php echo $r['policy_type']; ?></p>
-    <?php
-}
-
-
-?>
+  </body>
+</html>
