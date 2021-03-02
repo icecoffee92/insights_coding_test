@@ -17,60 +17,71 @@
       <div role="main" class="container">
         <h1 class="mb-3">Policies</h1>
         <div id="app" class="col-md-8">
-          <client-list></client-list>
+          <table class="table">
+              <thead>
+                <tr> 
+                  <th @click="sort('client_name')">Client Name</th>
+                  <th @click="sort('customer_address')">Customer Address</th>
+                  <th @click="sort('customer_name')">Customer Name</th>
+                  <th @click="sort('insurer_name')">Insurer Name</th>
+                  <th @click="sort('premium')">Premium</th>
+                  <th @click="sort('policy_type')">Policy Type</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="policy in sortedPolicies">
+                  <td>{{policy.client_name}}</td>
+                  <td>{{policy.customer_address}}</td>
+                  <td>{{policy.customer_name}}</td>
+                  <td>{{policy.insurer_name}}</td>
+                  <td>{{policy.premium}}</td>
+                  <td>{{policy.policy_type}}</td>              
+                </tr>
+              </tbody>
+            </table>
+
+            debug: sort={{currentSort}}, dir={{currentSortDir}}
         </div>
       </div>
     </div>
 
     <script>
 
-      Vue.component('client-list', {
-        template:`
-          <table class="table">
-            <thead>
-              <tr> 
-                <th>Client Name</th>
-                <th>Customer Address</th>
-                <th>Customer Name</th>
-                <th>Insurer Name</th>
-                <th>Premium</th>
-                <th>Policy Type</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr v-for="policy in policies">
-                <td>{{policy.client_name}}</td>
-                <td>{{policy.customer_address}}</td>
-                <td>{{policy.customer_name}}</td>
-                <td>{{policy.insurer_name}}</td>
-                <td>{{policy.premium}}</td>
-                <td>{{policy.policy_type}}</td>              
-              </tr>
-            </tbody>
-          </table>`,
-          data() {
-            return {
-              errorMsg: false,
-              message: 'Hello World!',
-              policies: [],
-              customer_address: '',
-            }
-          },
-          mounted: function() {
-            this.getAllClients(); 
-          },
-          methods: {
-            getAllClients() {
-              axios.get('http://localhost:8000/api/policy/read.php').then((response) => {
-                this.policies = response.data.policies; 
-                console.log(response.data.policies);
-              });
-            }
-          }
-      });
-
       const App = new Vue({
         el: '#app',
+        data() {
+          return {
+            policies: [],
+            currentSort: 'client_name',
+            currentSortDir: 'asc'
+          }
+        },
+        created: function() {
+          fetch('http://localhost:8000/api/policy/read.php')
+            .then(res => res.json())
+            .then(res => {
+              this.policies = res.policies;
+            })
+        },
+        methods: {
+          sort: function(s) {
+            if(s === this.currentSort) {
+              this.currentSortDir = this.currentSortDir === 'asc' ? 'desc' : 'asc';
+            }
+            this.currentSort = s; 
+          }
+        },
+        computed: {
+          sortedPolicies: function() {
+            return this.policies.sort((a, b) => {
+              let modifier = 1;
+              if(this.currentSortDir === 'desc') modifier = -1;
+              if(a[this.currentSort] < b[this.currentSort]) return -1 * modifier;
+              if(a[this.currentSort] > b[this.currentSort]) return 1 * modifier;
+              return 0;
+            });
+          }
+        }
       });
 
     </script>
