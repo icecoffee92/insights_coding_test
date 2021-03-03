@@ -4,17 +4,9 @@ class Policy {
     private $conn;
     private $table = 'policy';
 
-    // Policy Properties
-    public $id;
-    public $client;
-    public $customer_name;
-    public $customer_address;
-    public $premium;
-    public $policy_type;
-    public $insurer_name;
-
-    public function __construct($db) {
-        $this->conn = $db;
+    public function __construct() {
+        $this->conn = new Database();
+        $this->conn = $this->conn->connect();
     }
 
     public function read() {
@@ -33,7 +25,7 @@ class Policy {
                 client c ON p.client = c.id
             ORDER BY
                 p.id DESC";
-
+                
         if($result = $this->conn->query($query)) {
 
             $policies = array();
@@ -49,10 +41,7 @@ class Policy {
             
             return json_encode($data); 
         }
-
     }
-    
-    // $this->conn->close();
 }
 
 ?>

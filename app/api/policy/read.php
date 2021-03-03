@@ -6,11 +6,9 @@ header('Content-Type: application/json');
 include_once '../../config/Database.php';
 include_once '../../models/Policy.php';
 
-$database = new Database();
-$db = $database->connect();
-
-$policy = new Policy($db);
+$policy = new Policy();
 $result = $policy->read();
+
 echo $result; 
 
 ?>
