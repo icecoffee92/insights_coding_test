@@ -1,0 +1,4 @@
+.policy-table thead tr th:hover {
+    cursor: pointer;
+    background: #212529d1; 
+}
