@@ -51,8 +51,12 @@ class Database {
         }
     }
 
-    public function insert($sql, $data) {
-
+    public function insert($sql) {
+        if($this->connection->query($sql)) {
+            return true;  
+        } else {
+            return false; 
+        }
     }
 }
 ?>
