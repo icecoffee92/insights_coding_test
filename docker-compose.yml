@@ -1,19 +1,6 @@
 version: '3.3'
 
 services:
-  # app:
-  #   build:
-  #     context: ./app
-  #   ports:
-  #     - "80:80"
-  #     - "443:443"
-  #   links:
-  #     - db
-  #   volumes:
-  #     - ~/binsights_code_test/app:/var/www/html
-  #   environment:
-  #     PMA_PORT: 8080
-  #     MYSQL_ROOT_PASSWORD: secret
   app:
     build:
       context: ./app
@@ -40,16 +27,14 @@ services:
       MYSQL_ROOT_PASSWORD: secret
       MYSQL_PASSWORD: secret
     volumes:
-      - mysql-data-volume:/var/lib/mysql 
+      - fresh-mysql-v:/var/lib/mysql 
 
   phpmyadmin:
     image: phpmyadmin/phpmyadmin:5.0.1
     restart: always
-    # container_name: phpmyadmin
     links:
       - db
     environment:
-    #  - PMA_ARBITRARY=1
       PMA_HOST: db
       PMA_USER: root
       PMA_PASSWORD: secret
@@ -60,5 +45,5 @@ services:
      
 volumes:
   # mysql-data:
-  # mysql-d:
-  mysql-data-volume:
+  # mysql-data-volume:
+  fresh-mysql-v:
