@@ -4,19 +4,54 @@ class Database {
     private $db_name = 'insights';
     private $username = 'root';
     private $password = 'secret';
-    private $conn;
+    // CHANGE!!!
+    public $connection;
+    private static $instance = null;
 
-    public function connect() {
-        $this->conn = null; 
+    public function __construct() {
 
-        $this->conn = new mysqli($this->host, $this->username, $this->password, $this->db_name); 
+        $this->connection = new mysqli($this->host, $this->username, $this->password, $this->db_name); 
 
-        if($this->conn->connect_errno) {
-            echo "Failed to connect to MySQL: " . $this->conn->connect_errno . " - " . $this->conn->connect_error;
+        if($this->connection->connect_errno) {
+            echo "Failed to connect to MySQL: " . $this->connection->connect_errno . " - " . $this->connection->connect_error;
             exit();
         }
 
-        return $this->conn;
+    }
+
+    public static function getInstance() {
+        if(self::$instance == null){
+          self::$instance = new Database();
+        }
+     
+        return self::$instance;
+    }
+
+    public function query($sql) {
+        echo "Query called"; 
+        if($result = $this->connection->query($sql)) {
+            $policies = array();
+
+            if($result) {
+                while($row = $result->fetch_assoc()) {
+                    $policies[] = $row;
+                }
+            }
+
+            $data = array();
+            $data['policies'] = $policies;
+
+            return $data;
+        } else {
+            echo "Cannot query sql<br>";
+            echo "SQL</br>";
+            print_r($sql);
+            echo "</br>Connection</br>";
+            print_r($this->connection);
+        }
+    }
+
+    public function insert($sql, $data) {
 
     }
 }
