@@ -4,8 +4,7 @@ class Database {
     private $db_name = 'insights';
     private $username = 'root';
     private $password = 'secret';
-    // CHANGE!!!
-    public $connection;
+    private $connection;
     private static $instance = null;
 
     public function __construct() {
@@ -28,26 +27,17 @@ class Database {
     }
 
     public function query($sql) {
-        echo "Query called"; 
-        if($result = $this->connection->query($sql)) {
-            $policies = array();
+        if($query = $this->connection->query($sql)) {
 
-            if($result) {
-                while($row = $result->fetch_assoc()) {
-                    $policies[] = $row;
+            $results = array();
+
+            if($query) {
+                while($row = $query->fetch_assoc()) {
+                    $results['policies'][] = $row;
                 }
             }
 
-            $data = array();
-            $data['policies'] = $policies;
-
-            return $data;
-        } else {
-            echo "Cannot query sql<br>";
-            echo "SQL</br>";
-            print_r($sql);
-            echo "</br>Connection</br>";
-            print_r($this->connection);
+            return $results;
         }
     }
 
