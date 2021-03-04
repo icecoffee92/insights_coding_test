@@ -7,7 +7,7 @@ include_once '../../config/Database.php';
 include_once '../../models/Policy.php';
 
 $policy = new Policy();
-$result = $policy->read();
+$result = $policy->getPolicies();
 
 echo $result; 
 

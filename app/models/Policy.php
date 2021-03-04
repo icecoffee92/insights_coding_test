@@ -1,19 +1,18 @@
 <?php
 class Policy {
     // DB Properties
-    private $conn;
+    private $db;
     private $table = 'policy';
 
     public function __construct() {
-        $this->conn = new Database();
-        $this->conn = $this->conn->connect();
+        $this->db = Database::getInstance(); 
     }
 
-    public function read() {
-        $query = "SELECT
+    public function getPolicies() {
+        $sql = "SELECT
                 c.name as client_name, 
                 p.id,
-                p.client,
+                p.client_id,
                 p.customer_name,
                 p.customer_address,
                 p.premium,
@@ -22,24 +21,12 @@ class Policy {
             FROM
             " . $this->table . " p 
             LEFT JOIN
-                client c ON p.client = c.id
+                client c ON p.client_id = c.id
             ORDER BY
                 p.id DESC";
                 
-        if($result = $this->conn->query($query)) {
-
-            $policies = array();
-
-            if($result) {
-                while($row = $result->fetch_assoc()) {
-                    $policies[] = $row;
-                }
-            }
-
-            $data = array();
-            $data['policies'] = $policies;
-            
-            return json_encode($data); 
+        if($result = $this->db->query($sql)) {
+            return json_encode($result); 
         }
     }
 }
