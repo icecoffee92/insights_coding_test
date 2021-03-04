@@ -8,18 +8,24 @@
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <!-- Bootstrap -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
+    <link rel="stylesheet" href="css/styles.css">
 
-    <title>Vue App</title>
+    <title>Insurance Policies</title>
   </head>
 
   <body>
     <div class="container">
       <div role="main" class="container">
-        <h1 class="mb-3">Policies</h1>
+        <h1 class="mb-3">Insurance Policies</h1>
+        <p class="lead">List of all current policies<p>
+        
+        <div class="col-xs-12">
+          <p>Click the headers of the table to sort table according to that column</p>
+        </div>
         <div id="app" class="col-md-8">
-          <table class="table">
-              <thead>
-                <tr> 
+          <table class="table table-striped table-hover policy-table">
+              <thead class="thead-dark">
+                <tr class="table-dark"> 
                   <th @click="sort('client_name')">Client Name</th>
                   <th @click="sort('customer_address')">Customer Address</th>
                   <th @click="sort('customer_name')">Customer Name</th>
