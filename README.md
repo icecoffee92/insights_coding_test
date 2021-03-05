@@ -5,4 +5,7 @@ docker-compose up -d --build
 docker exec -it php73 bash -c "php import_json.php"
 
 ## Go to the application
-http://localhost/
+http://localhost:8000
+
+## Go to PHPMyAdmin
+http://localhost:8080
