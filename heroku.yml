@@ -1,3 +1,5 @@
 build:
   docker:
     web: app/Dockerfile
+run:
+  web: vendor/heroku/heroku-buildpack-php/bin/heroku-php-apache2
