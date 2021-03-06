@@ -43,6 +43,5 @@ services:
       - 8080:80
      
 volumes:
-  # mysql-data:
   # mysql-data-volume:
   fresh-mysql-v:
